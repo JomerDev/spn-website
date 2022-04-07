@@ -6,7 +6,7 @@ from django.core.exceptions import PermissionDenied, SuspiciousOperation
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_http_methods
-from core.models import ApiKey, SnakeVersion, ServerCommand, get_user_profile, LiveStats
+from core.models import ApiKey, SnakeVersion, ServerCommand, get_user_profile, LiveStats, UserProfile
 
 class bot_api(object):
     def __init__(self, f):
@@ -252,3 +252,21 @@ def stats(request):
         buildstats[state] = SnakeVersion.objects.filter(compile_state=state).count()
 
     return JsonResponse(stats_dict(livestats, buildstats))
+
+
+class SetLangForm(ModelForm):
+    class Meta:
+        model = UserProfile
+        fields = ['prog_lang']
+
+
+@require_http_methods(['POST'])
+#@login_required()
+def set_prog_lang(request):
+
+    form = SetLangForm(request.POST or None)
+    if form.is_valid():
+        profile = get_user_profile(request.user)
+        profile.prog_lang = form.cleaned_data.get('prog_lang', 'cpp')
+        profile.save()
+    return redirect('profile')

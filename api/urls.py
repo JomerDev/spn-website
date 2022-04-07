@@ -21,4 +21,6 @@ urlpatterns = [
     path('keys/delete/<int:key_id>', views.delete_api_key, name='api_key_delete'),
 
     path('stats', views.stats, name='stats'),
+
+    path('prog_lang', views.set_prog_lang, name='set_prog_lang' )
 ]

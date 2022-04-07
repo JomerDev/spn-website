@@ -12,6 +12,22 @@
   <form method="GET" action="{% url "api_keys_list" %}">
     <button type="submit" class="ui small positive button">Manage API Keys</button>
   </form>
+  <h3>Programming language</h3>
+  <form method="POST" action="{% url "set_prog_lang" %}">
+    {% csrf_token %}
+    <select name="prog_lang" style="min-width: 50px;min-height: 1em;margin: 0 .25em 0 0;padding: .78571429em 1.5em .78571429em;" autocomplete="off" >
+      <option value="cpp" 
+        {% if profile.prog_lang == 'cpp' %}selected="selected"{% endif %}
+        >C++</option>
+      <option value="lua"
+        {% if profile.prog_lang == 'lua' %}selected="selected"{% endif %}
+        >Lua</option>
+      <option value="rust"
+      {% if profile.prog_lang == 'rust' %}selected="selected"{% endif %}
+        >Rust</option>
+    </select>
+    <button type="submit" class="ui small positive button">Submit</button>
+  </form>
   <h3>Viewer Key</h3>
   Websocket Viewer Key: {{ profile.viewer_key }}
 </div>
