@@ -66,6 +66,7 @@ class UserProfile(models.Model):
     viewer_key = models.BigIntegerField(unique=True)
     active_snake = models.ForeignKey(SnakeVersion, null=True, blank=True, on_delete=models.SET_NULL)
     persistent_data = models.BinaryField(max_length=2**20, null=True, blank=True)
+    prog_lang = models.CharField(default='cpp', max_length=10)
 
     def save(self, *args, **kwargs):
         if not self.viewer_key:
@@ -97,7 +98,7 @@ class ServerCommand(models.Model):
     dt_created = models.DateTimeField(auto_now_add=True, blank=True)
     dt_processed = models.DateTimeField(null=True, blank=True, editable=False)
     command = models.CharField(max_length=255, choices=COMMAND_CHOICES)
-    result = models.NullBooleanField(editable=False)
+    result = models.BooleanField(editable=False, null=True)
     result_msg = models.TextField(blank=True, null=True, editable=False)
 
 

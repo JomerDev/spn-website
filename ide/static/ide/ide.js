@@ -51,11 +51,19 @@ $(window).resize(function() {
     game.vis.Resize();
 });
 
+const ace_lang_names = {
+    cpp: "c_cpp",
+    rust: "rust",
+    lua: "lua"
+}
+
 function setupEditor()
 {
     editor = ace.edit("editor");
     editor.setTheme("ace/theme/idle_fingers");
-    editor.session.setMode("ace/mode/c_cpp");
+    let textarea_lang = $('#prog_lang').hide();
+    let mode = ace_lang_names[ textarea_lang.val() ] || textarea_lang.val() || "c_cpp";
+    editor.session.setMode("ace/mode/" + mode);
     editor.setShowPrintMargin(false);
     let textarea = $('#code').hide();
     editor.getSession().setValue(textarea.val());

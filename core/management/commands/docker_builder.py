@@ -7,7 +7,7 @@ import tempfile
 import datetime
 import json
 from django.core.management.base import BaseCommand
-from core.models import SnakeVersion
+from core.models import SnakeVersion, UserProfile
 
 def now():
     return datetime.datetime.utcnow().isoformat()
@@ -38,7 +38,9 @@ class Command(BaseCommand):
 
     def run_build_script(self, snake_version):
         BUILD_CWD = "../gameserver/docker4bots/"
-        BUILD_SCRIPT = "./1_build_spn_cpp_bot.sh"
+        BUILD_SCRIPT = "./1_build_spn_bot.sh"
+
+        prog_lang = UserProfile.objects.filter(user=snake_version.user)[0].prog_lang
 
         code_file = self.write_code_to_temp_file(snake_version)
         print(f"{now()}: Code written to {code_file}")
@@ -47,7 +49,7 @@ class Command(BaseCommand):
             clean_name = self.cleanup_username(snake_version.user.username)
             cmd = [BUILD_SCRIPT, str(snake_version.id), clean_name, code_file]
             print(f"{now()}: Running: {cmd}")
-            return_code, data = self.get_output_json(cmd, cwd=BUILD_CWD)
+            return_code, data = self.get_output_json(cmd, cwd=BUILD_CWD + prog_lang + "/")
             print(f"{now()}: subprocess completed: {return_code}")
             return return_code, data
 
