@@ -261,7 +261,7 @@ class SetLangForm(ModelForm):
 
 
 @require_http_methods(['POST'])
-#@login_required()
+@login_required()
 def set_prog_lang(request):
 
     form = SetLangForm(request.POST or None)

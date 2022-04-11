@@ -5,6 +5,7 @@ from django.contrib.auth import login, authenticate
 from django.contrib.auth.forms import UserCreationForm, PasswordChangeForm
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
+from django.conf import settings
 from core.models import get_user_profile
 
 class MyUserCreationForm(UserCreationForm):
@@ -30,7 +31,7 @@ def signup(request):
 
 @login_required
 def profile(request):
-    return render(request, 'core/profile.html', {'user': request.user, 'profile': get_user_profile(request.user)})
+    return render(request, 'core/profile.html', {'user': request.user, 'profile': get_user_profile(request.user), 'prog_langs': settings.PROGRAMMING_LANGUAGES})
 
 
 @login_required

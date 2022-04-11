@@ -15,3 +15,7 @@ DATABASES = {
         'PORT': '3306',
     }
 }
+
+PROGRAMMING_LANGUAGES = {
+    'cpp': 'C++'
+}
